@@ -22,14 +22,14 @@ jobs:
         id: creds
         uses: aws-actions/configure-aws-credentials@v2
         with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ github.event.input.region }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ github.event.inputs.region }}
 
       - name: Deploy to AWS CloudFormation
         id: s3-buckets
         uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
           template: s3.yml
-          parameter-overrides: BucketName=${{ github.event.input.bucketname }}"
+          parameter-overrides: BucketName=${{ github.event.inputs.bucketname }}"
   
