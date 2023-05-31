@@ -1,40 +1,35 @@
-name: Deploy CloudFormation Stacks
+name: Deploy Cloudformation Stacks
 
-# Controls when the action will run.
 on:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
       region:
         description: "AWS Region"
         required: true
         default: "ap-southeast-2"
-      bucketName:
-        description: "S3 Bucket Name"
-        default: "imba-test-bucket-leo"
+      bucketname:
+        description: "S3 bucket"
         required: true
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+        default: "imba-test"
 jobs:
   cfn-deployment:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Configure AWS credentials
+        uses: actions/checkout@v3
+      
+      - name: Configure AWS Credentials
         id: creds
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ github.event.inputs.region }} 
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ github.event.input.region }}
 
-      - name: Deploy S3 Buckets CloudFormation Stacks
+      - name: Deploy to AWS CloudFormation
         id: s3-buckets
-        uses: aws-actions/aws-cloudformation-github-deploy@v1.0.3
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
-          name:  s3-buckets
-          template: cfn/s3.yml
-          parameter-overrides: >-
-            BucketName=${{ github.event.inputs.bucketName }}
+          template: s3.yml
+          parameter-overrides: BucketName=${{ github.event.input.bucketname }}"
+  
