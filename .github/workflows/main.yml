@@ -31,5 +31,5 @@ jobs:
         uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
           template: s3.yml
-          parameter-overrides: BucketName=${{ github.event.inputs.bucketname }}"
+          parameter-overrides: BucketName=${{ github.event.inputs.bucketname }}
   
